@@ -7,6 +7,7 @@ import android.content.res.AssetManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
@@ -36,7 +37,9 @@ class PluginsImpl() : Plugins, BaseEnv {
         }else{
             pluginsPath =File(path)
         }
-
+        if (pluginsPath.exists()) {
+            pluginsPath.setReadOnly()
+        }
         val deferredRes = async { loadRes(pluginsPath.absolutePath) }
         val deferredDex = async {
             loadDex(
