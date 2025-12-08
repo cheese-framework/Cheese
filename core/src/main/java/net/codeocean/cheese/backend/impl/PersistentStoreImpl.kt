@@ -5,7 +5,10 @@ import android.util.Base64
 import net.codeocean.cheese.core.BaseEnv
 import net.codeocean.cheese.core.api.PersistentStore
 
-object PersistentStoreImpl:PersistentStore,BaseEnv {
+object PersistentStoreImpl : PersistentStore, BaseEnv {
+    private const val BASE64_PREFIX = "base64:"
+
+
     override fun save(name: String, key: String, value: Any) {
         val sharedPref = cx.getSharedPreferences(name, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
@@ -15,7 +18,7 @@ object PersistentStoreImpl:PersistentStore,BaseEnv {
             is Boolean -> editor.putBoolean(key, value)
             is ByteArray -> {
                 val encodedValue = Base64.encodeToString(value, Base64.DEFAULT)
-                editor.putString(key, encodedValue)
+                editor.putString(key, BASE64_PREFIX + encodedValue)
             }
             else -> return
         }
@@ -35,13 +38,16 @@ object PersistentStoreImpl:PersistentStore,BaseEnv {
 
         val all = sharedPref.all
         val value = all[key] ?: return null
-
         return when (value) {
             is String -> {
-                try {
-                    val decoded = Base64.decode(value, Base64.DEFAULT)
-                    if (decoded.isNotEmpty()) decoded else value
-                } catch (_: IllegalArgumentException) {
+                if (value.startsWith(BASE64_PREFIX)) {
+                    try {
+                        val decoded = Base64.decode(value, Base64.DEFAULT)
+                        if (decoded.isNotEmpty()) decoded else value
+                    } catch (_: IllegalArgumentException) {
+                        value
+                    }
+                } else {
                     value
                 }
             }
