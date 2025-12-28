@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:name=".PythonApp">
+        <service
+            android:name="net.codeocean.cheese.frontend.python.PythonService"
+            android:exported="true"
+            android:process=":remote"
+            android:stopWithTask="true"
+            tools:ignore="ExportedService">
+<!--            <meta-data-->
+<!--                android:name="shared-libs"-->
+<!--                android:value="net.codeocean.cheese.core.viewnode.ViewNode"/>-->
+            <intent-filter>
+                <action android:name="cheese.AIDLService" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
