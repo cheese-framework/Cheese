@@ -11,4 +11,5 @@ interface Files {
     fun append(filePath: String, content: String): Boolean
     fun write(filePath: String, content: String): Boolean
     fun save(obj: Any, filePath: String): Boolean
+    fun scanFile(path: String)
 }

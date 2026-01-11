@@ -14,6 +14,8 @@ import java.io.FileWriter
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import android.media.MediaScannerConnection
+import net.codeocean.cheese.core.CoreEnv
 
 object FilesUtils {
 
@@ -387,6 +389,17 @@ object FilesUtils {
             }
         }
         return result
+    }
+
+    fun scanFile(path: String) {
+        synchronized(this) {
+            MediaScannerConnection.scanFile(
+                CoreEnv.envContext.context,
+                arrayOf(path),
+                null,
+                null
+            )
+        }
     }
 
 }
