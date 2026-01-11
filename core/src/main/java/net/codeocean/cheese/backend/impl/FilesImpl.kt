@@ -51,4 +51,8 @@ object FilesImpl : Files {
     override fun save(obj: Any, filePath: String): Boolean {
         return FilesUtils.save(obj, filePath)
     }
+
+    override fun scanFile(path: String) {
+        return FilesUtils.scanFile(path)
+    }
 }
